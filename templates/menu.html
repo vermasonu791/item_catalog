@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>GameInfo</title>
+	
+	<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="//apis.google.com/js/platform.js?onload=start"> </script>
+    <!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!--css external file-->
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='coustom.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-inverse ">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{{url_for('showAllCat')}}">Catalog app</a>
+            </div>
+		    <ul class="nav navbar-nav navbar-right">
+                <li>
+                    {% if 'username' not in session %}
+                    <a href="{{url_for('showLogin')}}">
+                        <button type="button" class="btn btn-default">Login</button>
+                    </a>
+                    {% else %}
+                    <a href="{{url_for('gdisconnect')}}">
+                        <button type="button" class="btn btn-default">Logout</button>
+                    </a>
+                    {% endif %}
+                </li>   
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+	    <div class="img1">
+            <img style="width:100%; height:300px;"src="{{url_for('static',filename='2.jpg')}}"class="img-thumbnail img-responsive" alt="">
+        </div>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="list-group">
+                    <li class="list-group-item">
+					    <h4 style=" font-weight: bold; font-size:30px; text-align:center; font-family:Arial, Helvetica, sans-serif;">{{category.name}}</h4>
+					</li>
+                </ul>
+		    </div>
+	        <div class="col-md-12">
+	            <div class="alert alert-success">
+                    <!--MESSAGE FLASHING -->
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <ul>
+                        {% for message in messages %}
+                        <li><strong>{{message}}</strong></li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% endwith %}
+                </div>
+	        </div>
+            <div class="col-md-6">
+			    <a href="{{url_for('newGame', category_id = category.id)  }}">
+			        <button style="text-decoration:none; type="button" class="btn btn-success">
+			            <h4 id="text2">If you want to create a new game,click me</h4>
+			        </button>
+			    </a>
+			</div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        {% for i in item%}
+                        <p>
+						    <h1>{{i.name}}</h1>
+					    </p>
+                        <h3>Description</h3>
+                        <p>{{i.description}}</p>
+                            <a href="{{url_for('editGame',category_id = category.id, game_id = i.id) }}"class="btn btn-info btn-block" role="button">Edit</a>
+                            <br>
+                            <a href="{{url_for('deleteGame',category_id = category.id, game_id = i.id) }}"class="btn btn-danger btn-block" role="button">Delete</a>
+                            {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
